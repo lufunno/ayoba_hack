@@ -2,7 +2,7 @@
 
 > This application was written in ReactJS. This is a SINGLE PAGE APPLICATION(SPA)
 
-[DEMO](https://we-tried.herokuapp.com/)
+[DEMO](https://we-tried-ayobahack.herokuapp.com/)
 
 #### Getting started
 ```
