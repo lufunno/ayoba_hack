@@ -1,3 +1,5 @@
+<?php include("database.php");
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +20,27 @@
 <!-- //web font -->
 </head>
 <body>
+<?php
+extract($_POST);
+
+if(isset($submit))
+{
+	$rs=mysqli_query("select * from responder where Resp_Name='$Resp_Name' and Pass='$pass'");
+	$row = mysqli_fetch_array($rs, MYSQLIi_ASSOC);
+	if(mysqli_num_rows($rs)<1)
+	{
+		$found="N";
+	}
+	else
+	{
+		$_SESSION['Resp_Name']=$Resp_Name;
+		$_SESSION['uname']=$Resp_Name;
+	    $_SESSION['Category']=$row['Category'];
+		header('Location:resphome1.php');
+	}
+}
+?>
+
 <h1>Incident Reporting </h1>
 <div class="main-agileits">
 <!--form-stars-here-->
@@ -25,71 +48,33 @@
 			<h2>Responder Login Page</h2>
 			<form action="" method="post">
 				<div class="form-sub-w3">
-					<input type="text" name="Username" placeholder="Customer number or username " required="" />
+					<input type="text" name="Resp_Name" placeholder="Username " required="" />
 				<div class="icon-w3">
 					<i class="fa fa-user" aria-hidden="true"></i>
 				</div>
 				</div>
 				<div class="form-sub-w3">
-					<input type="password" name="Password" placeholder="Password" required="" />
+					<input type="password" name="pass" placeholder="Password" required="" />
+				<?php
+		  if(isset($found))
+		  {
+		  	echo "Invalid Responder Name or Password";
+		  }
+		  ?>
+		
 				<div class="icon-w3">
 					<i class="fa fa-unlock-alt" aria-hidden="true"></i>
 				</div>
 				</div>
-				<p class="p-bottom-w3ls">Are you New User?<a class="w3_play_icon1" href="signup.php">  Register here</a></p>
 				<div class="submit-w3l">
-					<input type="submit" value="Login">
-					<p class="p-bottom-w3ls">Are you a Responder?<a	class="w3_play_icon1" href="#small-dialog1"> Sign In here</a></p>
+					<input name="submit" type="submit" value="Login">
+					<p class="p-bottom-w3ls">Are you a Reporter?<a	class="w3_play_icon1" href="index.php"> Sign In here</a></p>
 				
 				</div>
 			</form>
 		</div>
 <!--//form-ends-here-->
 </div>
-<div id="small-dialog1" class="mfp-hide">
-					<div class="contact-form1">
-										<div class="contact-w3-agileits">
-										<h3>Register Form</h3>
-											<form action="#" method="post">
-												<div class="form-sub-w3ls">
-													<input placeholder="User Name"  type="text" required="">
-													<div class="icon-agile">
-														<i class="fa fa-user" aria-hidden="true"></i>
-													</div>
-												</div>
-												<div class="form-sub-w3ls">
-													<input placeholder="Email" class="mail" type="email" required="">
-													<div class="icon-agile">
-														<i class="fa fa-envelope-o" aria-hidden="true"></i>
-													</div>
-												</div>
-												<div class="form-sub-w3ls">
-													<input placeholder="Password"  type="password" required="">
-													<div class="icon-agile">
-														<i class="fa fa-unlock-alt" aria-hidden="true"></i>
-													</div>
-												</div>
-												<div class="form-sub-w3ls">
-													<input placeholder="Confirm Password"  type="password" required="">
-													<div class="icon-agile">
-														<i class="fa fa-unlock-alt" aria-hidden="true"></i>
-													</div>
-												</div>
-											</div>
-											<div class="login-check">
-								 			 <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><p>I Accept Terms & Conditions</p></label>
-											</div>
-										<div class="submit-w3l">
-											<input type="submit" value="Register">
-										</div>
-										</form>
-					</div>	
-				</div>
-<!-- copyright -->
-	<div class="copyright w3-agile">
-		<p> © 2020 Credit Login / Register Form . All rights reserved | Design by <a href="#" target="_blank">We-Tired</a></p>
-	</div>
-	<!-- //copyright --> 
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<!-- pop-up-box -->  
 		<script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
