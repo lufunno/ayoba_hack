@@ -183,7 +183,7 @@ form {
 	font-family: 'Open Sans', sans-serif;
 }
 #hey {
-    style="background: #fff;
+	background: #fff;
     color: #000;
     outline: none;
     display: block;
@@ -201,7 +201,7 @@ form {
     -webkit-transition: 0.3s all;
     -moz-transition: 0.3s all;
     -o-transition: 0.3s all;
-    -ms-transition: 0.3s all;"
+    -ms-transition: 0.3s all;
 }
 
 input[type="submit"] {

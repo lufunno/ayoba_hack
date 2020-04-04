@@ -22,114 +22,43 @@ include("database.php");
 </head>
 
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
-<script type="text/javascript"> 
-  var geocoder;
+<script src="microapp.js"></script>
+<script type="text/javascript">
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-} 
-//Get the latitude and the longitude;
-function successFunction(position) {
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
-    codeLatLng(lat, lng)
+function onLocationChanged(lat, lon) {
+	document.getElementById("locationInputText").value = lat.concat(", ").concat(lon)
 }
 
-function errorFunction(){
-    alert("Geocoder failed");
-}
+//Getting user information
+function onProfileChanged(nickname, avatarPath) {
+        document.getElementById("uname").value = nickname
+        document.getElementById("avatarImage").src = avatarPath
+    }
 
-  function initialize() {
-    geocoder = new google.maps.Geocoder();
-
-
-
-  }
-
-  function codeLatLng(lat, lng) {
-
-    var latlng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode({'latLng': latlng}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-      console.log(results)
-        if (results[1]) {
-         //formatted address
-		 var geoloc=results[0].formatted_address;  //Extracting GeoLocation	
-         alert("Address is :"+geoloc);
-        //find country name
-             for (var i=0; i<results[0].address_components.length; i++) {
-            for (var b=0;b<results[0].address_components[i].types.length;b++) {
-
-            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
-                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                    //this is the object you are looking for
-                    city= results[0].address_components[i];
-                    break;
-                }
-            }
-        }
-        //city data
-		var city=
-        alert(city.short_name + " " + city.long_name)
-
-
-        } else {
-          alert("No results found");
-        }
-      } else {
-        alert("Geocoder failed due to: " + status);
-      }
-    });
-  }
 </script> 
 <body onload="initialize()">
-<?php
-
-extract($_POST);
-
-if(isset($submit))
-{
-	$rs=mysqli_query("select * from user where uname='$uname' and pass='$pass'");
-	if(mysqli_num_rows($rs)<1)
-	{
-		$found="N";
-	}
-	else
-	{
-		$_SESSION['uname']=$uname;
-		header('Location:home.php');
-	}
-}
-?>
-
 <h1>Incident Reporting </h1>
 <div class="main-agileits">
 <!--form-stars-here-->
 		<div class="form-w3-agile">
-			<h2>Reporter Login Page</h2>
-			<form action="" method="post">
+			<h2>Welcome to incident report </h2>
+			<form action="db.php" method="post">
 				<div class="form-sub-w3">
-					<input type="text" name="uname" placeholder="Customer number or username " required="" />
+					<input type="text" id="uname" name="uname" placeholder="Your User name" required="" />
 				<div class="icon-w3">
 					<i class="fa fa-user" aria-hidden="true"></i>
 				</div>
 				</div>
 				<div class="form-sub-w3">
-					<input type="password" name="pass" placeholder="Password" required="" />
+					<input type="text" id="phone" name="phone" placeholder="Pleace confirm your phone number" maxlength="10" required="" />
 				<div class="icon-w3">
-					<i class="fa fa-unlock-alt" aria-hidden="true"></i>
+					<i class="fa fa-phone" aria-hidden="true"></i>
 				</div>			
 				</div>
-					  <?php
-		                if(isset($found))
-		             {
-		  	         echo "Invalid uname or Password";
-		             }
-		              ?>
-				<p class="p-bottom-w3ls">Are you New User?<a class="w3_play_icon1" href="signup.php">  Register here</a></p>
+				<!-- <p class="p-bottom-w3ls">Are you New User?<a class="w3_play_icon1" href="signup.php">  Register here</a></p> -->
 				<div class="submit-w3l">
 					<input name="submit" type="submit" value="Login">
-					<p class="p-bottom-w3ls">Are you a Responder?<a	class="w3_play_icon1" href="respsignin.php"> Sign In here</a></p>
+					<!-- <p class="p-bottom-w3ls">Are you a Responder?<a	class="w3_play_icon1" href="respsignin.php"> Sign In here</a></p> -->
 				
 				</div>
 			</form>

@@ -18,65 +18,9 @@
 <!-- //web font -->
 
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
+<script src="microapp.js"></script>
 <script type="text/javascript"> 
-  var geocoder;
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-} 
-//Get the latitude and the longitude;
-function successFunction(position) {
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
-    codeLatLng(lat, lng)
-}
-
-function errorFunction(){
-    alert("Geocoder failed");
-}
-
-  function initialize() {
-    geocoder = new google.maps.Geocoder();
-
-
-
-  }
-
-  function codeLatLng(lat, lng) {
-
-    var latlng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode({'latLng': latlng}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-      console.log(results)
-        if (results[1]) {
-         //formatted address
-		 var geoloc=results[0].formatted_address;  //Extracting GeoLocation	
-         alert("Address is :"+geoloc);
-        //find country name
-             for (var i=0; i<results[0].address_components.length; i++) {
-            for (var b=0;b<results[0].address_components[i].types.length;b++) {
-
-            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
-                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                    //this is the object you are looking for
-                    city= results[0].address_components[i];
-                    break;
-                }
-            }
-        }
-        //city data
-		var city=
-        //alert(city.short_name + " " + city.long_name)
-
-
-        } else {
-          alert("No results found");
-        }
-      } else {
-        alert("Geocoder failed due to: " + status);
-      }
-    });
-  }
 </script> 
 <style>
 #hey {
@@ -121,7 +65,7 @@ function errorFunction(){
 <?php
 include("database.php");
 include("header.php");
-if($_SESSION['uname']=="")
+if($_SESSION['usernamer']=="")
 	header('Location:index.php');
 ?>
 
@@ -137,7 +81,7 @@ if($_SESSION['uname']=="")
 	<th id="hey1" width="33%" height="40"><span style="color:white;font-family: Oswald, sans-serif;">Date</span></td>
 	<th id="hey1" width="33%" height="40"><span style="color:white;font-family: Oswald, sans-serif;">View</span></td>
   </tr></table><br>';
-  $rs1=mysqli_query("select * from incidentreport where ReporterName='{$_SESSION['uname']}' order by IncidentId desc");
+  $rs1=mysqli_query("SELECT * FROM incidentreport WHERE username='{$_SESSION['usernamer']}' ORDER BY id DESC");
 	$X=1;	while($row1 = mysqli_fetch_array($rs1, MYSQLIi_ASSOC)){
 	echo '<table width="100%" class="form-w3-agile1"> <tr align="center">
 	<td width="33%" height="40"><span style="color:white;font-family: Oswald, sans-serif;">'.$row1['I_Name'].'</span></td> 

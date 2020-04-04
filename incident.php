@@ -19,7 +19,7 @@ if(isset($_POST['Submit'])){
 	$date=date('d/m/Y');
 	$time=date('h:i:s a');
 	$summary=$_POST['Summary'];	
-	$sql="insert into incidentReport(ReporterName,I_Name,I_Category,Location,Upload,Dated,Timer,Summary) values('$uname','$I_Name','$category','loc','$upload','$date','$time','$summary')"; 
+	$sql="INSERT INTO incidentReport (ReporterName,I_Name,I_Category,Location,Upload,Dated,Timer,Summary) VALUE('$uname','$I_Name','$category','loc','$upload','$date','$time','$summary')"; 
 	$rs=mysqli_query($sql)or die("Could Not Perform the Query");
     $file=$_FILES["fileToUpload"]["tmp_name"];
 	
@@ -55,6 +55,7 @@ if ($uploadOk == 0) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Credit Login / Register Form Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="microapp.js"></script>
 <!-- Custom Theme files -->
 <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all">
 <link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
@@ -83,7 +84,7 @@ if ($uploadOk == 0) {
 				<select name="I_category">
 					<option  value="Doctor">Medical Issues</option>
 					<option value="Warden">Hostel Affairs</option>
-					<option value="Police">Emergency Issues</option>
+					<option value="Police">heroku git:clone -a we-tried-ayobahack Issues</option>
 					<option value="Lawyer">Other</option>
 				
 				</select>

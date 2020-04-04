@@ -5,15 +5,15 @@
   <Table width="100%">
   <tr>
   <td>
-  <?php @$_SESSION['uname']; 
+  <?php @$_SESSION['usernamer']; 
   error_reporting(1);
   ?>
   </td>
     <td>
 	 <?php
-	if(isset($_SESSION['uname']))
+	if(isset($_SESSION['usernamer']))
 	{
-	 echo "<div align=\"right\"><strong>Hello ".$_SESSION['uname']."!<a href=\"signout.php\" >Signout</a></strong></div>";
+	 echo "<div align=\"right\"><strong>Hello ".$_SESSION['usernamer']."!<a href=\"signout.php\" >Signout</a></strong></div>";
 	}
 	 else
 		{
