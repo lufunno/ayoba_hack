@@ -2,50 +2,9 @@
 include("database.php");
 include("header.php");
 
-if($_SESSION['uname']!=""){
+if($_SESSION['usernamer'] == ""){
 	header('Location:index.php');
 }
-$uname=$_SESSION['uname'];
-$target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = 1;
-$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-if(isset($_POST['Submit'])){
-	date_default_timezone_set('Asia/Kolkata');
-    $upload=$_FILES["fileToUpload"]["name"];
-	$I_Name=$_POST['I_Name'];
-	$category=$_POST['I_category'];
-	$loc=$_POST['Location'];
-	$date=date('d/m/Y');
-	$time=date('h:i:s a');
-	$summary=$_POST['Summary'];	
-	$sql="INSERT INTO incidentReport (ReporterName,I_Name,I_Category,Location,Upload,Dated,Timer,Summary) VALUE('$uname','$I_Name','$category','loc','$upload','$date','$time','$summary')"; 
-	$rs=mysqli_query($sql)or die("Could Not Perform the Query");
-    $file=$_FILES["fileToUpload"]["tmp_name"];
-	
-	$size = getimagesize($file);
-    if(!$size) {
-        $uploadOk=0;
-    }
-  $valid_types = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_BMP);
-
-    if(in_array($size[2],  $valid_types)) {
-        $uploadOk=1;
-    } else {
-        $uploadOk=0;
-    }
-// Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0) {
-    echo "<script>alert('Sorry, your file was not uploaded.');</script>";
-// if everything is ok, try to upload file
-} else {
-    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        echo "<script>alert('The file has been uploaded.');</script>";
-    } else {
-        echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
-    }
-}	}
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -72,7 +31,7 @@ if ($uploadOk == 0) {
 <!--form-stars-here-->
 		<div class="form-w3-agile">
 			<h2>Reporter Window</h2>
-			<form action="" method="post" action="" enctype="multipart/form-data">
+			<form action="db.php" method="POST" enctype="multipart/form-data">
 				<div class="form-sub-w3">
 					<input type="text" name="I_Name" placeholder="Incident Name" required="" />
 				<div class="icon-w3">
@@ -103,9 +62,9 @@ if ($uploadOk == 0) {
 				</div>
 				
 				</div>
-				<input type="file" name="fileToUpload" id="fileToUpload">
+				<!-- <input type="file" name="fileToUpload" id="fileToUpload"> -->
 				<div class="submit-w3l">
-					<input type="submit" name="Submit" value="Post">					
+					<input type="submit" name="insubmit" value="Submit">					
 				</div>
 			</form>
 		</div>

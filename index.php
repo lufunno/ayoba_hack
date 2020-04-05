@@ -37,6 +37,18 @@ function onProfileChanged(nickname, avatarPath) {
 
 </script> 
 <body onload="initialize()">
+
+<?php
+include("database.php");
+include("header.php");
+if($_SESSION['usernamer'] == ""){
+	header('Location:index.php');
+}
+else {
+	header('Location:home.php');
+}
+?>
+
 <h1>Incident Reporting </h1>
 <div class="main-agileits">
 <!--form-stars-here-->
