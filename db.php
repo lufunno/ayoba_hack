@@ -3,7 +3,7 @@
 require_once 'database.php';
 
 if(isset($_POST['insubmit'])){
-        $usernamer = $_SESSION['usernamer'];
+    $username = $_SESSION['usernamer'];
 	date_default_timezone_set('Asia/Kolkata');
 	$I_Name=$_POST['I_Name'];
 	$category=$_POST['I_category'];
@@ -11,10 +11,11 @@ if(isset($_POST['insubmit'])){
 	$date = date('d/m/Y');
 	$time = date('h:i:s a');
 	$summary = $_POST['Summary'];
-
+	// var_dump($username, $I_Name, $category, $loc, $date, $time, $summary);
 	$insertsql = $dbconnect->prepare("INSERT INTO incidentReport (ReporterName, I_Name, I_Category, Location, Dated, Timer, Summary) VALUES (?,?,?,?,?,?,?)");
     $insertsql->bind_param("sssssss", $username, $I_Name, $category, $loc, $date, $time, $summary);
-    $insertsql->execute();
+	$insertsql->execute();
+	// var_dump($insertsql->execute());
 }
 
 if(isset($_POST['submit'])) {

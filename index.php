@@ -2,19 +2,25 @@
 
 require_once 'database.php';
 
+if(isset($_POST['close'])){
+    session_destroy();
+}
+
 if(isset($_POST['insubmit'])){
-        $usernamer = $_SESSION['usernamer'];
-	date_default_timezone_set('Asia/Kolkata');
+    $username = $_SESSION['usernamer'];
+	date_default_timezone_set('Africa/Johannesburg');
 	$I_Name=$_POST['I_Name'];
 	$category=$_POST['I_category'];
 	$loc=$_POST['Location'];
 	$date = date('d/m/Y');
 	$time = date('h:i:s a');
 	$summary = $_POST['Summary'];
-
+	// var_dump($username, $I_Name, $category, $loc, $date, $time, $summary);
 	$insertsql = $dbconnect->prepare("INSERT INTO incidentReport (ReporterName, I_Name, I_Category, Location, Dated, Timer, Summary) VALUES (?,?,?,?,?,?,?)");
     $insertsql->bind_param("sssssss", $username, $I_Name, $category, $loc, $date, $time, $summary);
     $insertsql->execute();
+    $message = "Your Report was uploaded but you can retrive it. We are still in production";
+    echo "<script type='text/javascript'>alert('$message');</script>";
     header('id:report');
 }
 
@@ -24,7 +30,8 @@ if(isset($_POST['submit'])) {
         $adsql = $dbconnect->prepare("SELECT phone FROM User WHERE phone=?");
         $_SESSION['usernamer'] = $username;
 	if($adsql->num_rows==1){
-        header('id:report');
+        $message = "Your Report was uploaded but you can retrive it. We are still in production";
+        echo "<script type='text/javascript'>alert('$message');</script>";
 	}
 	else {
 		$insertsql = $dbconnect->prepare("INSERT INTO User (username, phone) VALUES (?,?)");
@@ -45,7 +52,7 @@ if(isset($_POST['submit'])) {
 ================================================== -->
 <title>Alert Incident</title>
 <meta charset="UTF-8">
-<meta name="description" content="Mcebo Xaba Resume & vCard">
+<meta name="description" content="Allert Incident">
 <meta name="keywords" content="personal, vcard, portfolio">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -76,9 +83,89 @@ if(isset($_POST['submit'])) {
 <!--[if lt IE 9]>
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+<script src="microapp.js"></script>
 
 </head>
-<body>
+
+<script src="lib/microapp.js"></script>
+<script>
+
+    function finish() {
+        Ayoba.finish();
+    }
+
+    function sendMessage() {
+        Ayoba.sendMessage(document.getElementById("inputText").value);
+        Ayoba.finish();
+    }
+
+    function composeMessage() {
+        Ayoba.composeMessage(document.getElementById("inputText").value);
+        Ayoba.finish();
+    }
+
+    function sendLocation() {
+        Ayoba.sendLocation(document.getElementById("inputTextLat").value, document.getElementById("inputTextLon").value);
+    }
+
+    function getCountry() {
+        var country = Ayoba.getCountry();
+        document.getElementById("inputText").value = country
+        return country
+    }
+
+    function getMsisdn() {
+        var msisdn = Ayoba.getMsisdn();
+        document.getElementById("inputText").value = msisdn
+        return msisdn
+    }
+
+    function getCanSendMessage() {
+        var canSendMessage = Ayoba.getCanSendMessage();
+        document.getElementById("inputText").value = canSendMessage
+        return canSendMessage
+    }
+
+    function getLanguage() {
+        var language = Ayoba.getLanguage();
+        document.getElementById("inputText").value = language
+        return language
+    }
+    
+    function getURLParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++) {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam) {
+                return sParameterName[1];
+            }
+        }
+    }
+
+
+    function onLocationChanged(lat, lon) {
+        document.getElementById("locationInputText").value = lat.concat(", ").concat(lon)
+    }
+
+   
+    function onProfileChanged(nickname, avatarPath) {
+        document.getElementById("uname").value = nickname
+        document.getElementById("avatarImage").src = avatarPath
+    }
+
+    
+    function onPresenceChanged(presence) {
+        document.getElementById("presenceInputText").value = presence
+    }
+
+    
+    function onLocationSentResponse(responseCode) {
+        document.getElementById("inputText").value = responseCode
+    }
+</script>
+
+<body onload="getAyoba()">
  <!-- Preloading -->
 <div id="preloader">
     <div class="spinner">
@@ -109,15 +196,10 @@ if(isset($_POST['submit'])) {
              <li></li>
              <li><p><span>Name : </span>'.$_SESSION['usernamer'].'</p></li>
          </ul>
-         <div class="col-md-12">';
-             if (isset($_SESSION['usernamer'])){
-                 echo '<a href="signout.php" class="site-btn icon">Log-out<i class="fa fa-sign-out" aria-hidden="true"></i></a>';
-             }
-             else{
-                 echo "&nbsp;";
-             }
-             ?>
-         <?php echo'
+         <div class="col-md-12">
+         <form class="site-form" action="" method="POST">
+            <button class="site-btn icon" name="close" type="submit" onClick="finish">Close Application<i class="fa fa-sign-out" aria-hidden="true"></i></button>
+        </form>
          </div>
      </div>
  </div>
@@ -187,7 +269,7 @@ if(isset($_POST['submit'])) {
                 <!-- Text Section -->
                 <div class="row">
                     <section class="about-me line col-md-12 padding_30 padbot_45">
-                    <div class="section-title"><span></span><h2>About th APP</h2></div>
+                    <div class="section-title"><span></span><h2>About the APP</h2></div>
                     <p class="top_30">In most cases, during disasters or emergencies be it a fire, a robbery, a mother in labor, blood deficiency, floods, etc, 
                         it's a matter of life or death and the people affected count on others for their own survival and getting assistance to them is always a race against time. We believe that even 
                         with the preparedness of other other people that when a crisis hits, response time is dependent on how fast and to whom the news reach and that's why we created the Community <strong>Alert</strong> Response Team.<br>
@@ -249,17 +331,14 @@ if(isset($_POST['submit'])) {
                                 </div>
                                 <div class="col-md-9">
                                 <select class="site-input" name="I_category" style="color:red">
-                                    <option  value="Doctor">Medical Issues</option>
-                                    <option value="Warden">Hostel Affairs</option>
-                                    <option value="Police">Robbery</option>
-                                    <option value="Lawyer">Other Emegency</option>
+                                    <option  value="Medical_Issues">Medical Issues</option>
+                                    <option value="Hostel_Affairs">Hostel Affairs</option>
+                                    <option value="Robbery">Robbery</option>
+                                    <option value="Other">Other Emegency</option>
                                 </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <input class="site-input" type="text" name="Location" placeholder="Location" required="" >
-                                </div>
-                                <div class="col-md-12">
-                                    <input class="site-input" type="text" name="Location" placeholder="Location" required="" >
+                                    <input class="site-input" type="text" name="Location" placeholder="Location" required="" onClick="sendLocation()" >
                                 </div>
                                 <div class="col-md-12">
                                     <textarea class="site-area" type="text-area" name="Summary" placeholder="Summary" required=""></textarea>
@@ -296,7 +375,17 @@ if(isset($_POST['submit'])) {
                     </div>
                 </div>
                 <div id="grid-container" class="top_60">
-                    
+                <table class="table table-striped text-center ">
+                <thead class="thead-inverse">
+                              <tr>
+                              <th><center>Appointment No</center></th>
+                              <th><center>Patients Full Name</center></th>
+                              <th><center>Medical Condition</center></th>
+                              <th><center>Doctor Needed</center></th>
+              
+                              </tr>
+                              </thead>
+              </table>
                 </div>
                 <!-- load more button -->
                 <div id="js-loadMore-agency" class="cbp-l-loadMore-button top_30">

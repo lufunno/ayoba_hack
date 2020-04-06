@@ -81,7 +81,7 @@ if($_SESSION['usernamer'] == "")
 	<th id="hey1" width="33%" height="40"><span style="color:white;font-family: Oswald, sans-serif;">Date</span></td>
 	<th id="hey1" width="33%" height="40"><span style="color:white;font-family: Oswald, sans-serif;">View</span></td>
   </tr></table><br>';
-  $rs1 = mysqli_query("SELECT * FROM incidentreport WHERE username = '{$_SESSION['usernamer']}' ORDER BY id DESC");
+  $rs1 = mysqli_query("SELECT * FROM incidentreport WHERE ReporterName = '{$_SESSION['usernamer']}' ORDER BY id DESC");
 	$X=1;	while($row1 = mysqli_fetch_array($rs1, MYSQLIi_ASSOC)){
 	echo '<table width="100%" class="form-w3-agile1"> <tr align="center">
 	<td width="33%" height="40"><span style="color:white;font-family: Oswald, sans-serif;">'.$row1['I_Name'].'</span></td> 
